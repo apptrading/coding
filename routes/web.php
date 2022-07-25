@@ -8,6 +8,10 @@ use App\Http\Controllers\ProsernalProfileController;
 use App\Http\Controllers\BranchsController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\RouteParcelConreoller;
+
+
+
 
 /***
  * 
@@ -138,6 +142,12 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::get('/app/parcel/normal', function () {
         return view('App.System.Parcel.parcel_normal');
     })->name('app.system.parcel.normal');
+    Route::get('/app/parcel/scan-pc', function () {
+        return view('App.System.Parcel.parcel_nomal_pc');
+    })->name('app.system.parcel.normal.pc');
+    Route::get('/app/parcel/scan-mb', function () {
+        return view('App.System.Parcel.parcel_nomal_mb');
+    })->name('app.system.parcel.normal.mb');
 
 
 
@@ -176,4 +186,8 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::get('/app/price-parcel/delete/{boxId}', [BoxController::class, 'PriceOfParcelDelete'])->name('app.PriceOfParceldelete');
     Route::post('/app/price-parcel/add', [BoxController::class, 'PriceOfParcelAdd'])->name('app.priceofparceladd');
     Route::post('/app/price-parcel/update', [BoxController::class, 'PriceOfParcelUpdate'])->name('app.priceofparcelupdate');
+
+
+    /** Parcel ROute */
+    Route::post('/app/route/step-first', [RouteParcelConreoller::class, 'ParcelStepFirst'])->name('app.parcelstepfirst');
 });
