@@ -11,7 +11,7 @@
                     <input type="text" class="form-control text-center" id="barcodes" name="barcodes" placeholder="barcodes"
                         readonly>
                     <button type="button" class="btn btn-block btn-outline-primary"><i class="fas fa-barcode"></i>
-                        Save</button>
+                        Save-5555</button>
                     {{-- </div> --}}
                 </center>
             </div>
