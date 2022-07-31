@@ -14,7 +14,7 @@
                     <div id="sig"></div>
 
                     <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel">
+                        <input type="file" class="form-control" id="inputGroupFile01">
                     </div>
 
                     <input type="hidden" name="signature_img" id="signature_img">
@@ -28,9 +28,9 @@
                             {{-- <i class="fas fa-save"></i> --}}
                             ລົບລາຍເຊັນ</button>
 
-                        <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
-                            type="button">
-                            <i class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
+                        <button class="btn btn-secondary"
+                            onclick="window.location.href='{{ route('app.system.parcel.normal') }}'" type="button"><i
+                                class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
                 </form>
             </div>

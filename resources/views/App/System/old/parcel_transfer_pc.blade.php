@@ -11,26 +11,15 @@
                     id="frm-step-first">
 
                     <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
-                    <div id="sig"></div>
-
-                    <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel">
-                    </div>
-
-                    <input type="hidden" name="signature_img" id="signature_img">
-
                     <div id="alertId"></div>
 
                     <div class="d-grid gap-2 col-12 mx-auto">
                         <button class="btn btn-primary" type="submit" id="btnSave"><i class="fas fa-save"></i>
                             ບັນທຶກ</button>
-                        <button class="btn btn-danger" type="button" id="clear">
-                            {{-- <i class="fas fa-save"></i> --}}
-                            ລົບລາຍເຊັນ</button>
 
-                        <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
-                            type="button">
-                            <i class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
+                        <button class="btn btn-secondary"
+                            onclick="window.location.href='{{ route('app.system.parcel.transfer') }}'" type="button"><i
+                                class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
                 </form>
             </div>
@@ -107,30 +96,4 @@
             });
         })
     </script>
-    <script>
-        $(function() {
-            var sig = $('#sig').signature();
-            var signature = $('#sig').signature({
-                syncField: '#signature_img',
-                syncFormat: 'PNG'
-            });
-
-
-            $('#disable').click(function() {
-                var disable = $(this).text() === 'Disable';
-                $(this).text(disable ? 'Enable' : 'Disable');
-                sig.signature(disable ? 'disable' : 'enable');
-            });
-            $('#clear').click(function() {
-                sig.signature('clear');
-            });
-            $('#json').click(function() {
-                alert(sig.signature('toJSON'));
-            });
-            $('#svg').click(function() {
-                alert(sig.signature('toSVG'));
-            });
-        });
-    </script>
-
 @endsection

@@ -10,8 +10,8 @@
                     <h2 data-aos="fade-up" class="laos">ການຕິດຕາມພັດສະດຸຂອງທ່ານ</h2>
 
                     <!-- <p data-aos="fade-up" data-aos-delay="100">Facere distinctio molestiae nisi fugit tenetur repellat non
-                                                                                        praesentium nesciunt optio quis sit odio nemo quisquam. eius quos reiciendis eum vel eum voluptatem eum
-                                                                                        maiores eaque id optio ullam occaecati odio est possimus vel reprehenderit</p> -->
+                                                                                                            praesentium nesciunt optio quis sit odio nemo quisquam. eius quos reiciendis eum vel eum voluptatem eum
+                                                                                                            maiores eaque id optio ullam occaecati odio est possimus vel reprehenderit</p> -->
 
                     <form action="#" style="border-radius:50px !important"
                         class="form-search d-flex align-items-stretch mb-3" data-aos="fade-up" data-aos-delay="200">
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-lg-5 order-1 order-lg-2 hero-img" data-aos="zoom-out">
-                    <img src="assets/img/logo-22.png" class="img-fluid mb-3 mb-lg-0" alt="">
+                    <img src="{{ asset('assets/img/logo-22.png') }}" class="img-fluid mb-3 mb-lg-0" alt="">
                 </div>
 
             </div>
@@ -84,7 +84,7 @@
                                     Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
                                     occaecati cupiditate non provident
                                 </p>
-                                <a href="service-details1.html" class="readmore stretched-link"><span>Learn More</span><i
+                                <a href="#" class="readmore stretched-link"><span>Learn More</span><i
                                         class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                                     commodo consequat tarad limino ata
                                 </p>
-                                <a href="service-details2.html" class="readmore stretched-link"><span>Learn More</span><i
+                                <a href="#" class="readmore stretched-link"><span>Learn More</span><i
                                         class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                                     Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
                                     fugiat nulla pariatur
                                 </p>
-                                <a href="service-details3.html" class="readmore stretched-link"><span>Learn More</span><i
+                                <a href="#" class="readmore stretched-link"><span>Learn More</span><i
                                         class="bi bi-arrow-right"></i></a>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
 
                 <div class="row gy-4">
                     <div class="col-lg-6 position-relative align-self-start order-lg-last order-first">
-                        <img src="assets/img/logo-2.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/logo-2.jpg') }}" class="img-fluid" alt="">
                         <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
                     </div>
                     <div class="col-lg-6 content order-last  order-lg-first">
@@ -214,7 +214,7 @@
                 <div class="row gy-4 align-items-center features-item" data-aos="fade-up">
 
                     <div class="col-md-5">
-                        <img src="assets/img/features-1.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/features-1.jpg') }}" class="img-fluid" alt="">
                     </div>
                     <div class="col-md-7">
                         <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
@@ -234,7 +234,7 @@
 
                 <div class="row gy-4 align-items-center features-item" data-aos="fade-up">
                     <div class="col-md-5 order-1 order-md-2">
-                        <img src="assets/img/features-2.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/features-2.jpg') }}" class="img-fluid" alt="">
                     </div>
                     <div class="col-md-7 order-2 order-md-1">
                         <h3>Corporis temporibus maiores provident</h3>
@@ -257,7 +257,7 @@
 
                 <div class="row gy-4 align-items-center features-item" data-aos="fade-up">
                     <div class="col-md-5">
-                        <img src="assets/img/features-3.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/features-3.jpg') }}" class="img-fluid" alt="">
                     </div>
                     <div class="col-md-7">
                         <h3>Sunt consequatur ad ut est nulla consectetur reiciendis animi voluptas</h3>
@@ -274,7 +274,7 @@
 
                 <div class="row gy-4 align-items-center features-item" data-aos="fade-up">
                     <div class="col-md-5 order-1 order-md-2">
-                        <img src="assets/img/features-4.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/features-4.jpg') }}" class="img-fluid" alt="">
                     </div>
                     <div class="col-md-7 order-2 order-md-1">
                         <h3>Quas et necessitatibus eaque impedit ipsum animi consequatur incidunt in</h3>

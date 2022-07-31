@@ -7,7 +7,7 @@
             <div class="col-md-4 col-12">
                 <h3 class="text-center">ໃສ່ເລກລະຫັດ ບາໂຄດ</h3>
 
-                <form action="{{ route('app.parcelstepfirst') }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route('app.parcelstepsecond') }}" method="POST" enctype="multipart/form-data"
                     id="frm-step-first">
 
                     <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
@@ -18,7 +18,7 @@
                             ບັນທຶກ</button>
 
                         <button class="btn btn-secondary"
-                            onclick="window.location.href='{{ route('app.system.parcel.normal') }}'" type="button"><i
+                            onclick="window.location.href='{{ route('app.system.parcel') }}'" type="button"><i
                                 class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
                 </form>

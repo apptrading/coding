@@ -9,7 +9,8 @@ use App\Http\Controllers\BranchsController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\RouteParcelConreoller;
-
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ParcelController;
 
 
 
@@ -139,15 +140,21 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::get('/app/parcel', function () {
         return view('App.System.Parcel.parcel_manu');
     })->name('app.system.parcel');
+
     Route::get('/app/parcel/normal', function () {
         return view('App.System.Parcel.parcel_normal');
     })->name('app.system.parcel.normal');
-    Route::get('/app/parcel/scan-pc', function () {
-        return view('App.System.Parcel.parcel_nomal_pc');
-    })->name('app.system.parcel.normal.pc');
-    Route::get('/app/parcel/scan-mb', function () {
-        return view('App.System.Parcel.parcel_nomal_mb');
-    })->name('app.system.parcel.normal.mb');
+
+
+
+    /** transfer form */
+    Route::get('/app/parcel/transfer', function () {
+        return view('App.System.Parcel.parcel_transfer');
+    })->name('app.system.parcel.transfer');
+
+    /** Reviever */
+    Route::get('/app/parcel/receiver', [CustomerController::class, 'Index'])->name('app.system.parcel.receiver');
+
 
 
 
@@ -188,6 +195,22 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::post('/app/price-parcel/update', [BoxController::class, 'PriceOfParcelUpdate'])->name('app.priceofparcelupdate');
 
 
-    /** Parcel ROute */
+    /** Parcel Route */
     Route::post('/app/route/step-first', [RouteParcelConreoller::class, 'ParcelStepFirst'])->name('app.parcelstepfirst');
+    Route::post('/app/route/step-second', [RouteParcelConreoller::class, 'ParcelStepSecond'])->name('app.parcelstepsecond');
+    /** Reviever */
+    Route::get('/app/parcel/receiver/{barcode}/{custid}', [RouteParcelConreoller::class, 'index_reciever'])->name('app.system.parcel.receiver.barcode');
+
+
+
+    /** Customer */
+    Route::post('/app/customer/add', [CustomerController::class, 'CustomerAdd'])->name('app.customer.add');
+    Route::post('/app/customer/check', [CustomerController::class, 'CustomerCheck'])->name('app.customer.check');
+
+
+    /** Parcel */
+    Route::post('/app/parcel/add', [ParcelController::class, 'ParcelAdd'])->name('app.parcel.add');
+    Route::get('/app/parcel/customer/show', [ParcelController::class, 'ParcelCustShow'])->name('app.parcel.cusr.show');
+    Route::get('/app/parcel/customer', [ParcelController::class, 'CustomerRecieve'])->name('app.parcel.cust.recieve');
+    Route::get('/app/parcel/customer/{barcode}', [ParcelController::class, 'CustomerParcelRecieve'])->name('app.parcel.customer');
 });
