@@ -1,0 +1,8 @@
+@font-face {
+    font-family: Nuanta;
+    src: url(Nuanta-Regular.ttf);
+}
+
+.laos {
+    font-family: Nuanta !important;
+}

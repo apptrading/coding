@@ -8,11 +8,12 @@ use App\Http\Controllers\ProsernalProfileController;
 use App\Http\Controllers\BranchsController;
 use App\Http\Controllers\ShelfController;
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\ConfirmController;
 use App\Http\Controllers\RouteParcelConreoller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ParcelController;
-
-
+use App\Http\Controllers\OrderByCustomerController;
+use App\Http\Controllers\Parcel_in_outController;
 
 /***
  * 
@@ -200,7 +201,7 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::post('/app/route/step-second', [RouteParcelConreoller::class, 'ParcelStepSecond'])->name('app.parcelstepsecond');
     /** Reviever */
     Route::get('/app/parcel/receiver/{barcode}/{custid}', [RouteParcelConreoller::class, 'index_reciever'])->name('app.system.parcel.receiver.barcode');
-
+    Route::post('/app/parcel/daily/add', [RouteParcelConreoller::class, 'Dailyparcel'])->name('app.parcel.Dailyparcel');
 
 
     /** Customer */
@@ -213,4 +214,24 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::get('/app/parcel/customer/show', [ParcelController::class, 'ParcelCustShow'])->name('app.parcel.cusr.show');
     Route::get('/app/parcel/customer', [ParcelController::class, 'CustomerRecieve'])->name('app.parcel.cust.recieve');
     Route::get('/app/parcel/customer/{barcode}', [ParcelController::class, 'CustomerParcelRecieve'])->name('app.parcel.customer');
+    Route::post('/app/parcel/customer/reciever', [ParcelController::class, 'ParcelCustomerRecieve'])->name('app.parcel.ParcelCustomerRecieve');
+    Route::get('/app/parcel/daily', [ParcelController::class, 'DailyparcelView'])->name('app.parcel.DailyparcelView');
+
+    Route::get('/app/parcel/cust/order', [OrderByCustomerController::class, 'IndexOrderByCust'])->name('app.parcel.custOrder');
+    Route::post('/app/parcel/cust/order/check', [OrderByCustomerController::class, 'OrderByCustCheck'])->name('app.parcel.OrderByCustCheck');
+    Route::get('/app/parcel/cust/order/{barcode}/{custid}', [OrderByCustomerController::class, 'OrderByCustDetail'])->name('app.parcel.CustomerOrder');
+    Route::post('/app/parcel/cust/order/add', [OrderByCustomerController::class, 'Register_OrderByCust'])->name('app.parcel.Register_OrderByCust');
+    Route::get('/app/parcel/cust/order/checked', [OrderByCustomerController::class, 'OrderCustCheck'])->name('app.parcel.checkcustOrder');
+    Route::get('/app/parcel/cust/order/show', [OrderByCustomerController::class, 'OrderCustCheckShow'])->name('app.parcel.cusr.show.checked');
+    Route::get('/app/parcel/cust/confirm/{id}', [OrderByCustomerController::class, 'OrderCustconfirm'])->name('app.parcel.cusr.OrderCustconfirm');
+    Route::post('/app/parcel/cust/conf/update', [OrderByCustomerController::class, 'OrderCustupdate'])->name('app.parcel.cusr.OrderCustupdate');
+
+    Route::get('/app/report/IO', [Parcel_in_outController::class, 'Menu'])->name('report.menu');
+    Route::get('/app/report/in/laos', [Parcel_in_outController::class, 'In_laos'])->name('report.In_laos');
+    Route::get('/app/report/out/laos', [Parcel_in_outController::class, 'out_to_cust'])->name('report.out_to_cust');
+    Route::get('/app/report/out/laos/detail/{barcode}', [Parcel_in_outController::class, 'out_customer_detail'])->name('report.out_customer_detail');
+    Route::get('/app/report/out/laos/data', [Parcel_in_outController::class, 'out_laos'])->name('report.out_laos');
+
+    /** Confirm */
+    Route::get('app/confirm/parcel', [ConfirmController::class, 'ConfirmIndex'])->name('app.confirm');
 });

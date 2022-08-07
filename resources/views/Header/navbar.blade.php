@@ -4,7 +4,7 @@
             aria-controls="offcanvasExample" style="font-size:28px;cursor: pointer;color: #fff"></i>
         <span style="color: #fff">
             <i class="fas fa-user-circle"></i>
-            <span>Phonepaseuth Sounthanousinh</span>
+            <span>{{ Auth::user()->name }}</span>
         </span>
     </div>
 </nav>
@@ -25,180 +25,191 @@
         </a>
         {{-- <hr> --}}
         <ul class="nav nav-pills flex-column mb-auto" style="width: 100%;">
-            <li class="nav-item ">
-                <a href="{{ route('app.dashboard') }}" class="nav-link  list-group-item py-3 active"
-                    aria-current="page">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-            </li>
+            @if (Auth::user()->userright == 1)
+                <li class="nav-item ">
+                    <a href="{{ route('app.dashboard') }}" class="nav-link  list-group-item py-3 active"
+                        aria-current="page">
+                        <i class="fas fa-home"></i>
+                        Dashboard
+                    </a>
+                </li>
+            @endif
             <li>
-                <a href="{{ route('app.system.parcel') }}" class="nav-link list-group-item py-3 fw-bold focus">
+                <a href="{{ route('app.system.parcel') }}" class="nav-link list-group-item py-3 focus">
                     <i class="fas fa-barcode"></i>
                     ລະບົບຕິດຕາມພັດສະດຸ
                 </a>
             </li>
-            <li>
-                <a href="#" class="nav-link list-group-item py-3 fw-bold focus">
-                    <i class="fas fa-sitemap"></i>
-                    ສະຫຼຸບພັດສະດຸນຳເຂົ້າ-ສົ່ງອອກ
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link list-group-item py-3 fw-bold focus">
-                    <i class="fas fa-retweet"></i>
-                    ຕິດຕາມພັດສະດຸຄ້າງສາງ
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link list-group-item py-3 fw-bold focus">
-                    <i class="fas fa-chart-line"></i>
-                    ກວດສອບບັນຊີ ກັບ ພັດສະດຸສົ່ງອອກ
-                </a>
-            </li>
-            <li>
-                <div class="accordion accordion-flush" id="accordionFlushExample">
-                    <div class="accordion-item">
-                        <h2 role="button" class="accordion-header accordion-button collapsed nav-color-bt"
-                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
-                            aria-controls="flush-collapseOne" id="flush-headingOne">Setting BackEnd
-                        </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            @if (Auth::user()->userright == 1 || Auth::user()->userright == 2)
+                <li>
+                    <a href="{{ route('report.menu') }}" class="nav-link list-group-item py-3 focus">
+                        <i class="fas fa-sitemap"></i>
+                        ສະຫຼຸບພັດສະດຸນຳເຂົ້າ-ສົ່ງອອກ
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('app.parcel.checkcustOrder') }}" class="nav-link list-group-item py-3 focus">
+                        <i class="fas fa-retweet"></i>
+                        ອະນຸມັດພັດສະດຸເກັບປາຍທາງ
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link list-group-item py-3 focus">
+                        <i class="fas fa-chart-line"></i>
+                        ກວດສອບບັນຊີ ກັບ ພັດສະດຸສົ່ງອອກ
+                    </a>
+                </li>
+            @endif
 
-                            <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.UserList') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-users"></i>
-                                        ຜູ້ໄຊງານ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.branchs') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-chalkboard-teacher"></i>
-                                        ສາຂາ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.shelfs') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-warehouse"></i>
-                                        ຊັ້ນວາງຂອງ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.priceofparcel') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-boxes"></i>
-                                        ຕັ້ງຄາລາຄ່າຂອງກ່ອງພັດສະດຸ
-                                    </a>
-                                </li>
-                            </ul>
+            @if (Auth::user()->userright == 1)
+                <li>
+                    {{-- /** Setting BackEnd **/ --}}
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 role="button" class="accordion-header accordion-button collapsed nav-color-bt"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne" id="flush-headingOne">Setting BackEnd
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+
+                                <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.UserList') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-users"></i>
+                                            ຜູ້ໄຊງານ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.branchs') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                            ສາຂາ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.shelfs') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-warehouse"></i>
+                                            ຊັ້ນວາງຂອງ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.priceofparcel') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-boxes"></i>
+                                            ຕັ້ງຄາລາຄ່າຂອງກ່ອງພັດສະດຸ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {{-- /** Setting FrontEnd **/ --}}
+                        <div class="accordion-item">
+                            <h2 role="button" class="accordion-header outline accordion-button collapsed nav-color-bt"
+                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                aria-controls="flush-collapseTwo" id="flush-headingTwo">Setting FrontEnd
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-clipboard-list"></i>
+                                            ບໍລິການເກັບເງິນປາຍທາງ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-truck"></i>
+                                            ບໍລິການຮັບພັດສະດຸດ້ວຍຕົວເອງ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-shield-alt"></i>
+                                            ບໍລິການເຄມສີນຄ້າ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-motorcycle"></i>
+                                            ບໍລິການສົ່ງພັດສະດຸຮອດບ້ານທ່ານ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-gavel"></i>
+                                            ຂໍ້ກຳໜົດແລະເງື່ອນໄຂການຂົນສົ່ງ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-bullhorn"></i>
+                                            ໂປໂມຊັ້ນຂອງຮ້ານ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="far fa-question-circle"></i>
+                                            ຄຳຖາມທີພົບບ່ອຍ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-users"></i>
+                                            Testimonials
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 role="button" class="accordion-header accordion-button collapsed nav-color-bt"
+                                id="flush-headingThree" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                aria-controls="flush-collapseThree"> Other
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fab fa-teamspeak"></i>
+                                            Other
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fab fa-teamspeak"></i>
+                                            Other
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.dashboard') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fab fa-teamspeak"></i>
+                                            Other
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
-                        <h2 role="button" class="accordion-header outline accordion-button collapsed nav-color-bt"
-                            data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                            aria-controls="flush-collapseTwo" id="flush-headingTwo">Setting FrontEnd
-                        </h2>
-                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                            <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-clipboard-list"></i>
-                                        ບໍລິການເກັບເງິນປາຍທາງ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-truck"></i>
-                                        ບໍລິການຮັບພັດສະດຸດ້ວຍຕົວເອງ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-shield-alt"></i>
-                                        ບໍລິການເຄມສີນຄ້າ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-motorcycle"></i>
-                                        ບໍລິການສົ່ງພັດສະດຸຮອດບ້ານທ່ານ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-gavel"></i>
-                                        ຂໍ້ກຳໜົດແລະເງື່ອນໄຂການຂົນສົ່ງ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-bullhorn"></i>
-                                        ໂປໂມຊັ້ນຂອງຮ້ານ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="far fa-question-circle"></i>
-                                        ຄຳຖາມທີພົບບ່ອຍ
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 fw-bold focus">
-                                        <i class="fas fa-users"></i>
-                                        Testimonials
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 role="button" class="accordion-header accordion-button collapsed nav-color-bt"
-                            id="flush-headingThree" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                            aria-expanded="false" aria-controls="flush-collapseThree"> Other
-                        </h2>
-                        <div id="flush-collapseThree" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                            <ul class="nav nav-pills flex-column mb-auto" style="width: 100%">
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 focus">
-                                        <i class="fab fa-teamspeak"></i>
-                                        Other
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 focus">
-                                        <i class="fab fa-teamspeak"></i>
-                                        Other
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="{{ route('app.dashboard') }}"
-                                        class="nav-link  list-group-item py-3 focus">
-                                        <i class="fab fa-teamspeak"></i>
-                                        Other
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </li>
+                </li>
+            @endif
+
         </ul>
         <hr>
         <div class="dropdown">

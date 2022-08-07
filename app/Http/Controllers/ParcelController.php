@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogPicture;
+use App\Models\OrderByCustomer;
 use App\Models\Parcel;
 use App\Models\RouteParcel;
 use Illuminate\Http\Request;
@@ -36,7 +38,7 @@ class ParcelController extends Controller
             if (!$rsRoute) {
                 return response()->json(["result" => false]);
             } else {
-                $random = uniqid();
+                // $random = uniqid();
                 $URL = $request->root();
 
 
@@ -44,47 +46,70 @@ class ParcelController extends Controller
                 $ParcelDES->parcel_inuserid = Auth::id();
                 $ParcelDES->parcel_outuserid = "0";
                 $ParcelDES->parcel_customerid = $request->custid;
-                $ParcelDES->parcel_width = $request->parcel_width;
-                $ParcelDES->parcel_length = $request->parcel_length;
-                $ParcelDES->parcel_height = $request->parcel_height;
-                $ParcelDES->parcel_kg = $request->parcel_kg;
-                $ParcelDES->parcel_total = $request->parcel_total;
+                $ParcelDES->parcel_width = str_replace(',', '', $request->parcel_width);
+                $ParcelDES->parcel_length = str_replace(',', '', $request->parcel_length);
+                $ParcelDES->parcel_height = str_replace(',', '', $request->parcel_height);
+                $ParcelDES->parcel_kg = str_replace(',', '', $request->parcel_kg);
+                $ParcelDES->parcel_total = str_replace(',', '', $request->parcel_total);
                 $ParcelDES->parcel_barcode = $request->parcel_barcode;
-
+                $ParcelDES->paymenttype = "0";
+                $ParcelDES->parcel_payment = "0";
 
                 if ($request->hasFile('pacel_picture')) {
                     /** Picture */
-                    $file = $request->file('pacel_picture');
-                    $name = $file->getClientOriginalName();
-                    $filesname = $request->parcel_barcode . time() . '_' . $name;
-                    Storage::putFileAs('images', $request->file('pacel_picture'),  $filesname);
-                    $ParcelDES->pacel_picture = $URL . '/images/' . $filesname;
+                    // $file = $request->file('pacel_picture');
+                    // $name = $file->getClientOriginalName();
+                    // $filesname = $request->parcel_barcode . time() . '_' . $name;
+                    // Storage::putFileAs('images', $request->file('pacel_picture'),  $filesname);
+                    // $ParcelDES->pacel_picture = $URL . '/images/' . $filesname;
+
+                    $files = $request->file('pacel_picture');
+                    foreach ($files as $key => $value) {
+
+                        // $file = $request->file('img_parcel');
+                        $name = $value->getClientOriginalName();
+                        $filesname = $request->route_barcode . time() . '_' . $name;
+                        // Storage::putFileAs('images', $request->file('img_parcel'),  $filesname);
+                        $value->move(public_path('images'), $filesname);
+
+                        $newIMG = new LogPicture();
+                        $newIMG->picture_userid = Auth::id();
+                        $newIMG->picture_barcode = strtoupper($request->parcel_barcode);
+                        $newIMG->picture_path = $URL . '/images/';
+                        $newIMG->picture_name = $filesname;
+                        $newIMG->save();
+
+                        $ParcelDES->pacel_picture = "na";
+                    }
 
                     /** Signature */
-                    $folder = public_path('images/signature/');
-                    $signature_picture = explode(';base64,', $request->parcel_signature);
+                    // $folder = public_path('images/signature/');
+                    // $signature_picture = explode(';base64,', $request->parcel_signature);
 
-                    $image_type_aux = explode('image/', $signature_picture[0]);
+                    // $image_type_aux = explode('image/', $signature_picture[0]);
 
-                    $image_type = $image_type_aux[1];
-                    $image_base64 = base64_decode($signature_picture[1]);
+                    // $image_type = $image_type_aux[1];
+                    // $image_base64 = base64_decode($signature_picture[1]);
 
-                    $file =  $request->parcel_barcode . '_' . $random . '_FIRST.' . $image_type;
-                    file_put_contents($folder . $file, $image_base64);
-                    $ParcelDES->parcel_signature = $URL . '/images/signature/' . $file;
+                    // $file =  $request->parcel_barcode . '_' . $random . '_FIRST.' . $image_type;
+                    // file_put_contents($folder . $file, $image_base64);
+                    // $ParcelDES->parcel_signature = $URL . '/images/signature/' . $file;
+
+                    $ParcelDES->parcel_signature = "na";
                 } else {
                     $ParcelDES->pacel_picture = "na";
                     $ParcelDES->parcel_signature = "na";
                 }
 
                 $ParcelDES->parcel_picturepayment = "na";
-                $ParcelDES->parcel_countpayment = $request->parcel_countpayment;
+                $ParcelDES->parcel_countpayment = str_replace(',', '', $request->parcel_countpayment);
                 $ParcelDES->parcel_receivedate = $request->datein;
                 $ParcelDES->parcel_outdate = $request->dateout;
                 $ParcelDES->parcel_shelfid = "0";
                 $ParcelDES->parcel_status = "1";
 
                 $rs = $ParcelDES->save();
+
                 if (!$rs) {
                     return response()->json(["result" => false]);
                 } else {
@@ -106,19 +131,87 @@ class ParcelController extends Controller
 
         return response()->json(["result" => true, 'datas' => $parcel]);
     }
-    public function CustomerParcelRecieve()
+    public function CustomerParcelRecieve(Request $request)
     {
-        return view('App.System.Parcel.parcel_customer_recieve');
+        $customer = OrderByCustomer::where('cust_barcode', $request->barcode)->first();
+        $customercount = OrderByCustomer::where('cust_barcode', $request->barcode)->count();
+        if ($customercount > 0) {
+            $customerCount = $customer->cust_payment;
+        } else {
+            $customerCount = 0;
+        }
+
+        $parcel = ParcelController::ParcelCustomerDES($request->barcode);
+        return view('App.System.Parcel.parcel_customer_recieve', ['datas' => $parcel, 'customerCount' => $customerCount]);
     }
 
-    public function ParcelCustomer($barcode = false)
+    public function ParcelCustomer()
     {
-        $where = "";
-        if ($barcode != false) $where = "";
         $parcel = Parcel::join('customers', 'customers.id', '=', 'parcels.parcel_customerid')
             ->select('customers.customer_name', 'customers.customer_tell', 'customers.customer_whatsapp', 'customers.customer_address', 'parcels.*')
             ->where('parcels.parcel_status', '1')
             ->get();
         return $parcel;
+    }
+    public function ParcelCustomerDES($barcode)
+    {
+        $parcel = Parcel::leftjoin('customers', 'customers.id', '=', 'parcels.parcel_customerid')
+            ->leftjoin('users', 'users.id', '=', 'parcels.parcel_inuserid')
+            ->select('users.name', 'customers.customer_name', 'customers.customer_tell', 'customers.customer_whatsapp', 'customers.customer_address', 'parcels.*')
+            ->where('parcels.parcel_status', '1')
+            ->where('parcels.parcel_barcode', $barcode)
+            ->first();
+        return $parcel;
+    }
+    public function ParcelCustomerRecieve(Request $request)
+    {
+        $random = uniqid();
+        $URL = $request->root();
+
+
+        $update = Parcel::find($request->id);
+        $update->parcel_outuserid = Auth::id();
+        $update->parcel_outdate = $request->parcel_outdate;
+        $update->paymenttype = $request->paymenttype;
+        $update->parcel_payment = str_replace(',', '', $request->parcel_payment);
+        $update->parcel_status = "2";
+
+        if ($request->hasFile('filepayment')) {
+            /** Picture */
+            $file = $request->file('filepayment');
+            $name = $file->getClientOriginalName();
+            $filesname = $request->parcel_barcode . time() . '_' . $name;
+            Storage::putFileAs('images', $request->file('filepayment'),  $filesname);
+            $update->parcel_picturepayment = $URL . '/images/' . $filesname;
+        } else {
+            $update->parcel_picturepayment = "na";
+        }
+
+        /** Signature */
+        $folder = public_path('images/signature/');
+        $signature_picture = explode(';base64,', $request->signature_img);
+
+        $image_type_aux = explode('image/', $signature_picture[0]);
+
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($signature_picture[1]);
+
+        $file =  $request->parcel_barcode . '_' . $random . '_FIRST.' . $image_type;
+        file_put_contents($folder . $file, $image_base64);
+        $update->parcel_signature = $URL . '/images/signature/' . $file;
+
+
+        
+        $rs_update = $update->update();
+        if (!$rs_update) {
+            return response()->json(["result" => false]);
+        } else {
+            return response()->json(["result" => true]);
+        }
+    }
+
+    public function DailyparcelView(Request $request)
+    {
+        return view('App.System.Parcel.parcel_daily');
     }
 }

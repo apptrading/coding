@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\OrderByCustomer;
 use App\Models\RouteParcel;
 use Illuminate\Http\Request;
 
@@ -43,11 +44,19 @@ class CustomerController extends Controller
             ->where('step', '2')->count();
         $CheckDiplicateST3 = RouteParcel::where('route_barcode', $request->route_barcode)
             ->where('step', '3')->count();
+        $customer = OrderByCustomer::where('cust_barcode', $request->route_barcode)->first();
+        $customercount = OrderByCustomer::where('cust_barcode', $request->route_barcode)->count();
+
+        if ($customercount > 0) {
+            $cust_customerid = $customer->cust_customerid;
+        } else {
+            $cust_customerid = "0";
+        }
 
         if ($CheckDiplicateST1 == 1 && $CheckDiplicateST2 == 1 && $CheckDiplicateST3 < 1) {
-            return response()->json(["result" => true]);
+            return response()->json(["result" => true, 'customerid' => $cust_customerid]);
         } else {
-            return response()->json(["result" => false, 'st1' => $CheckDiplicateST1, 'st2' => $CheckDiplicateST2, 'st3' => $CheckDiplicateST3]);
+            return response()->json(["result" => false, 'customerid' => $cust_customerid, 'st1' => $CheckDiplicateST1, 'st2' => $CheckDiplicateST2, 'st3' => $CheckDiplicateST3]);
         }
     }
 }

@@ -1,0 +1,9 @@
+@font-face {
+    font-family: Nuanta;
+    src: url(Nuanta-Regular.ttf);
+}
+
+html,
+body {
+    font-family: Nuanta !important;
+}

@@ -28,13 +28,14 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
 
     {{-- Signature --}}
-    <link href="{{ asset('sign/css/jquery.signature.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    {{-- <link href="{{ asset('sign/css/jquery.signature.css') }}" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{ asset('sign/js/jquery.signature.js') }}"></script>
+    <script src="{{ asset('sign/js/jquery.signature.js') }}"></script> --}}
 
     {{-- Font laos --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@200&display=swap" rel="stylesheet">
     <style>
@@ -42,7 +43,9 @@
         body {
             font-family: 'Noto Sans Lao', sans-serif;
         }
-    </style>
+    </style> --}}
+    <!-- font Laos -->
+    <link href="{{ asset('font/fonts_b.css') }}" rel="stylesheet">
     <style>
         .kbw-signature {
             width: 100%;

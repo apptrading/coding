@@ -11,10 +11,18 @@
                     id="frm-step-first">
 
                     <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
-                    <div id="sig"></div>
 
-                    <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel">
+                    {{-- <div id="sig"></div> --}}
+                    <div style="width: 100%;height: 200px;">
+                        <canvas id="sig" class="sig"
+                            style="border:1px solid red;width: 100%;height: 200px;"></canvas>
+                        <i class="fab fa-adn" role="button" id="save-png"
+                            style="top: -45px;position: relative;font-size: 35px;left: 5px;"></i>
+                    </div>
+
+
+                    <div class="input-group py-2"> 
+                        <input type="file" class="form-control" id="img_parcel" name="img_parcel[]"  multiple >
                     </div>
 
                     <input type="hidden" name="signature_img" id="signature_img">
@@ -25,7 +33,6 @@
                         <button class="btn btn-primary" type="submit" id="btnSave"><i class="fas fa-save"></i>
                             ບັນທຶກ</button>
                         <button class="btn btn-danger" type="button" id="clear">
-                            {{-- <i class="fas fa-save"></i> --}}
                             ລົບລາຍເຊັນ</button>
 
                         <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
@@ -63,6 +70,7 @@
                             $('#btnSave').html(
                                 '<i class="fas fa-save"></i> ບັນທືກ')
                             $('#frm-step-first')[0].reset();
+                            signaturePad.clear();
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -108,28 +116,50 @@
         })
     </script>
     <script>
-        $(function() {
-            var sig = $('#sig').signature();
-            var signature = $('#sig').signature({
-                syncField: '#signature_img',
-                syncFormat: 'PNG'
-            });
+        function _error_sign() {
+            Swal.fire(
+                'ກະລຸນາລົງລາຍເຊັນ',
+                '',
+                'error'
+            )
+        }
+
+        $('#btnSave').prop('disabled', true)
+        var canvas = document.getElementById('sig');
+
+        function resizeCanvas() {
+            var ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+        }
+
+        window.onresize = resizeCanvas;
+        resizeCanvas();
+
+        var signaturePad = new SignaturePad(canvas, {
+            backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+        });
+
+        var data = signaturePad.toDataURL('image/png');
+        console.log(data);
+        $('#signature_img').val(data);
 
 
-            $('#disable').click(function() {
-                var disable = $(this).text() === 'Disable';
-                $(this).text(disable ? 'Enable' : 'Disable');
-                sig.signature(disable ? 'disable' : 'enable');
-            });
-            $('#clear').click(function() {
-                sig.signature('clear');
-            });
-            $('#json').click(function() {
-                alert(sig.signature('toJSON'));
-            });
-            $('#svg').click(function() {
-                alert(sig.signature('toSVG'));
-            });
+        document.getElementById('save-png').addEventListener('click', function() {
+            if (signaturePad.isEmpty()) {
+                // return alert("Please provide a signature first.");
+                return _error_sign()
+            }
+
+            var data = signaturePad.toDataURL('image/png');
+            document.getElementById('signature_img').value = data;
+            $('#btnSave').prop('disabled', false)
+            // console.log(data);
+        });
+        document.getElementById('clear').addEventListener('click', function() {
+            signaturePad.clear();
+            $('#btnSave').prop('disabled', true)
         });
     </script>
 

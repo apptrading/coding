@@ -28,18 +28,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 py-1">
                             <button class="btn btn-secondary w-100" type="button"
                                 onclick="window.location.href='{{ route('app.system.parcel') }}'">
                                 <i class="fas fa-reply-all"></i> ຍ້ອນກັບ
                             </button>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 py-1">
                             <button type="button" onclick="$('#customer_add').modal('show')" class="btn btn-warning w-100">
                                 <i class="fas fa-plus"></i> ເພິ່ມລູກຄ້າ
                             </button>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 py-1">
                             <button type="submit" id="btn_next" class="btn btn-primary w-100">
                                 ຖັດໄປ <i class="fas fa-angle-double-right"></i>
                             </button>
@@ -164,8 +164,15 @@
                                 'ຖັດໄປ <i class="fas fa-angle-double-right"></i>')
                             if (result.result == true) {
                                 // $('#frm_checkBarcode')[0].reset();
-                                window.location.href = '/app/parcel/receiver/' + $(
-                                    '#route_barcode').val() + '/' + $('#customerId').val();
+                                if (result.customerid > 0) { 
+                                    window.location.href = '/app/parcel/receiver/' + $(
+                                        '#route_barcode').val() + '/' + result.customerid;
+                                } else {
+                                    window.location.href = '/app/parcel/receiver/' + $(
+                                            '#route_barcode').val() + '/' + $('#customerId')
+                                        .val(); 
+                                }
+
                                 _complete()
                             } else {
                                 _error_step(result.st1, result.st2, result.st3);
@@ -201,7 +208,7 @@
             if (st1 > 0 && st2 < 1 && st3 == 0) $title = "ພັດສະດຸຂ້າມ Step 2 ";
             if (st1 < 1 && st2 < 1 && st3 == 0) $title = "ພັດສະດຸຂ້າມ Step 1 ແລະ Step 2";
             if (st1 > 0 && st2 > 0 && st3 > 0) $title = "ເລກພັດສະດຸນີ້ຮັບເຂົ້າສາງໃຫຍ່ສຳເລັດແລ້ວ";
-            
+
             Swal.fire(
                 $title,
                 '',
