@@ -17,9 +17,8 @@
                         <button class="btn btn-primary" type="submit" id="btnSave"><i class="fas fa-save"></i>
                             ບັນທຶກ</button>
 
-                        <button class="btn btn-secondary"
-                            onclick="window.location.href='{{ route('app.system.parcel') }}'" type="button"><i
-                                class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
+                            type="button"><i class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
                 </form>
             </div>
@@ -71,12 +70,7 @@
                                 title: 'successfully'
                             })
                         } else {
-                            $('#alertId').html(
-                                "<div class=\"alert alert-danger  alert-dismissible fade show\" role=\"alert\">" +
-                                " <strong>ຂໍ້ມູນຊ້ຳກັນ</strong> ລະຫັດນີ້ ມີໃນສະເຕັບນີ້ແລ້ວ" +
-                                "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>" +
-                                "</div>"
-                            )
+                            _error('ລະຫັດນີ້ ມີໃນສະເຕັບນີ້ແລ້ວ')
                             $('#btnSave').prop('disabled', false)
                             $('#btnSave').html(
                                 '<i class="fas fa-save"></i> ບັນທືກ')
@@ -89,11 +83,24 @@
                         $('#btnSave').prop('disabled', false)
                         $('#btnSave').html(
                             '<i class="fas fa-save"></i> ບັນທືກ')
+                        _error(err)
                     }
 
                 });
 
             });
         })
+
+
+        function _error(err = false) {
+            var _err = 'Something went wrong!';
+            if (err != false) _err = err;
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: _err,
+                footer: '<a href="https://nsoftdev.com">www.nsofdev.com</a>'
+            })
+        }
     </script>
 @endsection

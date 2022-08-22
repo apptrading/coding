@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\LogPicture;
 use App\Models\OrderByCustomer;
 use App\Models\Parcel;
@@ -9,6 +10,7 @@ use App\Models\RouteParcel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use PDO;
 
 class ParcelController extends Controller
 {
@@ -16,6 +18,12 @@ class ParcelController extends Controller
     {
         $CheckDiplicateST3 = RouteParcel::where('route_barcode', $request->parcel_barcode)
             ->where('step', '3')->count();
+
+        $datas = RouteParcel::where('route_barcode', $request->parcel_barcode)
+            ->where('step', '2')
+            ->first();
+
+
 
         if ($CheckDiplicateST3 > 0) {
             return response()->json(["result" => false]);
@@ -82,19 +90,6 @@ class ParcelController extends Controller
                         $ParcelDES->pacel_picture = "na";
                     }
 
-                    /** Signature */
-                    // $folder = public_path('images/signature/');
-                    // $signature_picture = explode(';base64,', $request->parcel_signature);
-
-                    // $image_type_aux = explode('image/', $signature_picture[0]);
-
-                    // $image_type = $image_type_aux[1];
-                    // $image_base64 = base64_decode($signature_picture[1]);
-
-                    // $file =  $request->parcel_barcode . '_' . $random . '_FIRST.' . $image_type;
-                    // file_put_contents($folder . $file, $image_base64);
-                    // $ParcelDES->parcel_signature = $URL . '/images/signature/' . $file;
-
                     $ParcelDES->parcel_signature = "na";
                 } else {
                     $ParcelDES->pacel_picture = "na";
@@ -113,6 +108,10 @@ class ParcelController extends Controller
                 if (!$rs) {
                     return response()->json(["result" => false]);
                 } else {
+                    $upst1 = RouteParcel::find($datas->id);
+                    $upst1->route_status = '2';
+                    $upst1->update();
+
                     return response()->json(["result" => true]);
                 }
             }
@@ -201,7 +200,7 @@ class ParcelController extends Controller
         $update->parcel_signature = $URL . '/images/signature/' . $file;
 
 
-        
+
         $rs_update = $update->update();
         if (!$rs_update) {
             return response()->json(["result" => false]);
@@ -213,5 +212,62 @@ class ParcelController extends Controller
     public function DailyparcelView(Request $request)
     {
         return view('App.System.Parcel.parcel_daily');
+    }
+
+    public function AdddataParcel(Request $request)
+    {
+        $datasSent =  RouteParcel::where('img_sign', 'noSign')->where('step', '3')->where('route_userid', Auth::id())->get();
+
+        $lasrrId = $request->customerId;
+
+        if ($request->customer_name != "" && $request->customer_tell != "") {
+            $customerAdd = new Customer();
+            $customerAdd->customer_name = $request->customer_name;
+            $customerAdd->customer_tell = $request->customer_tell;
+            $customerAdd->customer_whatsapp = $request->customer_tell;
+            $customerAdd->customer_address = "-";
+            $customerAdd->save();
+            $lasrrId = $customerAdd->id;
+        }
+
+
+
+        foreach ($datasSent as $key => $value) {
+
+            $ParcelDES = new Parcel();
+            $ParcelDES->parcel_inuserid = Auth::id();
+            $ParcelDES->parcel_outuserid = "0";
+            $ParcelDES->parcel_customerid = $lasrrId;
+            $ParcelDES->parcel_width = str_replace(',', '', $request->parcel_width);
+            $ParcelDES->parcel_length = str_replace(',', '', $request->parcel_length);
+            $ParcelDES->parcel_height = str_replace(',', '', $request->parcel_height);
+            $ParcelDES->parcel_kg = str_replace(',', '', $request->parcel_kg);
+            $ParcelDES->parcel_total = str_replace(',', '', $request->parcel_total);
+            $ParcelDES->parcel_barcode = strtoupper($value->route_barcode);
+            $ParcelDES->parcel_branchid = $request->branchid;
+            $ParcelDES->parcel_typeparcel = $request->type_parcel;
+            $ParcelDES->paymenttype = "0";
+            $ParcelDES->parcel_payment = "0";
+            $ParcelDES->pacel_picture = "na";
+            $ParcelDES->parcel_remark = $request->parcel_remark;
+            $ParcelDES->parcel_picturepayment = "na";
+            $ParcelDES->parcel_countpayment = str_replace(',', '', $request->parcel_countpayment);
+            $ParcelDES->parcel_paycod = str_replace(',', '', $request->parcel_paycod);
+            $ParcelDES->parcel_receivedate = date('Y-m-d');
+            $ParcelDES->parcel_shelfid = "0";
+            $ParcelDES->parcel_status = "1";
+            $rs = $ParcelDES->save();
+
+            $Routeparcel = RouteParcel::find($value->id);
+            $Routeparcel->route_status = "2";
+            $Routeparcel->img_sign = "na";
+            $Routeparcel->update();
+        }
+
+        if (!$rs) {
+            return response()->json(["result" => false]);
+        } else {
+            return response()->json(["result" => true]);
+        }
     }
 }

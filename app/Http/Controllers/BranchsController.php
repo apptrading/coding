@@ -101,4 +101,10 @@ class BranchsController extends Controller
     {
         return response()->json(["result" => true]);
     }
+
+    public function Branchlist()
+    {
+        $br = Branchs::all();
+        return response()->json(["result" => true, "datas" => $br]);
+    }
 }

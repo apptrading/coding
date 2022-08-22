@@ -143,9 +143,16 @@ Route::middleware([UserLogin::class])->group(function () {
     })->name('app.system.parcel');
 
     Route::get('/app/parcel/normal', function () {
+        return view('App.System.Parcel.parcel_menu_scan');
+    })->name('app.system.parcel.normal.parcel_menu_scan');
+
+    Route::get('/app/parcel/normal/scand', function () {
         return view('App.System.Parcel.parcel_normal');
     })->name('app.system.parcel.normal');
 
+    Route::get('/app/parcel/normal/scand/multiple', function () {
+        return view('App.System.Parcel.parcel_normal_multiple');
+    })->name('app.system.parcel.normal_multiple');
 
 
     /** transfer form */
@@ -155,7 +162,10 @@ Route::middleware([UserLogin::class])->group(function () {
 
     /** Reviever */
     Route::get('/app/parcel/receiver', [CustomerController::class, 'Index'])->name('app.system.parcel.receiver');
+    Route::get('/app/parcel/receiver/store', [CustomerController::class, 'Index_store'])->name('app.system.parcel.receiverstore');
+    Route::get('/app/parcel/customer/receiver', [CustomerController::class, 'Customer_Receive'])->name('app.system.parcel.customer_Receive');
 
+    Route::post('/app/parcel/receiver/add/store', [CustomerController::class, 'Add_store'])->name('app.parcel.recievestore');
 
 
 
@@ -179,6 +189,7 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::post('/app/branchs/add', [BranchsController::class, 'BranchAdd'])->name('app.addbranchs');
     Route::post('/app/branchs/update', [BranchsController::class, 'BranchUpdate'])->name('app.updatebranchs');
     Route::get('/app/branchs/delete/{branchId}', [BranchsController::class, 'DeleteProfile'])->name('app.BdeleteProfile');
+    Route::get('/app/parcel/receiver/store/branch', [BranchsController::class, 'Branchlist'])->name('app.customer.branch.select');
 
     /** Shelf */
     Route::get('/app/shelf', [ShelfController::class, 'Index'])->name('app.shelfs');
@@ -198,15 +209,35 @@ Route::middleware([UserLogin::class])->group(function () {
 
     /** Parcel Route */
     Route::post('/app/route/step-first', [RouteParcelConreoller::class, 'ParcelStepFirst'])->name('app.parcelstepfirst');
+    Route::post('/app/route/step-first/multiple', [RouteParcelConreoller::class, 'FirstMultiple'])->name('app.parcelstepfirst.FirstMultiple');
+    Route::post('/app/route/step-first/multiple/sign', [RouteParcelConreoller::class, 'SignMultiple'])->name('app.parcelstepfirst.SignMultiple');
+    Route::get('/app/route/show/multiple', [RouteParcelConreoller::class, 'showmultiple'])->name('app.parcelstepfirst.show.multiple');
+    Route::get('/app/route/show/multiple/3', [RouteParcelConreoller::class, 'showmultipleStep3'])->name('app.parcelstepfirst.show.multipleStep3');
+
+    Route::get('/app/route/del/multiple/{id}', [RouteParcelConreoller::class, 'delmultiple'])->name('app.parcelstepfirst.del.multiple');
+
     Route::post('/app/route/step-second', [RouteParcelConreoller::class, 'ParcelStepSecond'])->name('app.parcelstepsecond');
+
+    Route::get('/app/route/signature', function () {
+        return view('App.System.Parcel.signature');
+    })->name('signature');
+
+
     /** Reviever */
     Route::get('/app/parcel/receiver/{barcode}/{custid}', [RouteParcelConreoller::class, 'index_reciever'])->name('app.system.parcel.receiver.barcode');
     Route::post('/app/parcel/daily/add', [RouteParcelConreoller::class, 'Dailyparcel'])->name('app.parcel.Dailyparcel');
+
+    /** customer receive */
+    Route::post('/app/parcel/sent/out', [RouteParcelConreoller::class, 'Sendout'])->name('app.parcel.sendout');
+    Route::get('/app/parcel/list/sent/out', [RouteParcelConreoller::class, 'ListSendout'])->name('app.parcel.listsendout');
+    Route::get('/app/parcel/list/sent/out-update', [RouteParcelConreoller::class, 'listsendoutUpdate'])->name('app.parcel.listsendoutUpdate');
 
 
     /** Customer */
     Route::post('/app/customer/add', [CustomerController::class, 'CustomerAdd'])->name('app.customer.add');
     Route::post('/app/customer/check', [CustomerController::class, 'CustomerCheck'])->name('app.customer.check');
+    Route::get('/app/parcel/store/customer', [CustomerController::class, 'CustomerList'])->name('app.customer.customer.select');
+
 
 
     /** Parcel */
@@ -216,6 +247,16 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::get('/app/parcel/customer/{barcode}', [ParcelController::class, 'CustomerParcelRecieve'])->name('app.parcel.customer');
     Route::post('/app/parcel/customer/reciever', [ParcelController::class, 'ParcelCustomerRecieve'])->name('app.parcel.ParcelCustomerRecieve');
     Route::get('/app/parcel/daily', [ParcelController::class, 'DailyparcelView'])->name('app.parcel.DailyparcelView');
+    Route::post('/app/parcel/reciever/datas', [ParcelController::class, 'AdddataParcel'])->name('app.parcel.AdddataParcel');
+
+
+    /** Print Out */
+    Route::get('/app/print/out', function () {
+        return view('App.System.Parcel.print_out');
+    })->name('print_out');
+
+
+
 
     Route::get('/app/parcel/cust/order', [OrderByCustomerController::class, 'IndexOrderByCust'])->name('app.parcel.custOrder');
     Route::post('/app/parcel/cust/order/check', [OrderByCustomerController::class, 'OrderByCustCheck'])->name('app.parcel.OrderByCustCheck');
@@ -223,14 +264,30 @@ Route::middleware([UserLogin::class])->group(function () {
     Route::post('/app/parcel/cust/order/add', [OrderByCustomerController::class, 'Register_OrderByCust'])->name('app.parcel.Register_OrderByCust');
     Route::get('/app/parcel/cust/order/checked', [OrderByCustomerController::class, 'OrderCustCheck'])->name('app.parcel.checkcustOrder');
     Route::get('/app/parcel/cust/order/show', [OrderByCustomerController::class, 'OrderCustCheckShow'])->name('app.parcel.cusr.show.checked');
-    Route::get('/app/parcel/cust/confirm/{id}', [OrderByCustomerController::class, 'OrderCustconfirm'])->name('app.parcel.cusr.OrderCustconfirm');
+    Route::get('/app/parcel/cust/confirm/{id}/{status}', [OrderByCustomerController::class, 'OrderCustconfirm'])->name('app.parcel.cusr.OrderCustconfirm');
     Route::post('/app/parcel/cust/conf/update', [OrderByCustomerController::class, 'OrderCustupdate'])->name('app.parcel.cusr.OrderCustupdate');
 
+
+
+    /**Report  */
     Route::get('/app/report/IO', [Parcel_in_outController::class, 'Menu'])->name('report.menu');
     Route::get('/app/report/in/laos', [Parcel_in_outController::class, 'In_laos'])->name('report.In_laos');
+    Route::get('/app/report/dashboard/list', [Parcel_in_outController::class, 'Dashboard'])->name('report.dashboardList');
+    Route::get('/app/report/dashboard', [Parcel_in_outController::class, 'Dashboard_view'])->name('report.dashboard');
     Route::get('/app/report/out/laos', [Parcel_in_outController::class, 'out_to_cust'])->name('report.out_to_cust');
+    Route::get('/app/report/sent-out', [Parcel_in_outController::class, 'sentOut'])->name('report.sent_out');
+    Route::get('/app/report/sent-out/list', [Parcel_in_outController::class, 'sentOutList'])->name('report.sentoutList');
     Route::get('/app/report/out/laos/detail/{barcode}', [Parcel_in_outController::class, 'out_customer_detail'])->name('report.out_customer_detail');
     Route::get('/app/report/out/laos/data', [Parcel_in_outController::class, 'out_laos'])->name('report.out_laos');
+    Route::get('/app/report/in/thai', [Parcel_in_outController::class, 'StockThai'])->name('report.stockthai');
+    Route::get('/app/report/stock/thai/data', [Parcel_in_outController::class, 'StockThaidetail'])->name('report.stockthaidetail');
+    Route::get('/app/report/transfer/thai', [Parcel_in_outController::class, 'Thaitransfer'])->name('report.Thaitransfer');
+    Route::get('/app/report/in-side', [Parcel_in_outController::class, 'Inside'])->name('report.inside');
+    Route::get('/app/report/in-side/list', [Parcel_in_outController::class, 'InsideList'])->name('report.insidelist');
+    Route::get('/app/report/transfer/thai/data', [Parcel_in_outController::class, 'Thaitransferdetail'])->name('report.thaitransferdetail');
+    Route::get('/app/report/daily', [Parcel_in_outController::class, 'Daily'])->name('report.daily');
+    Route::get('/app/report/daily/list', [Parcel_in_outController::class, 'Dailylist'])->name('report.dailylist');
+
 
     /** Confirm */
     Route::get('app/confirm/parcel', [ConfirmController::class, 'ConfirmIndex'])->name('app.confirm');

@@ -84,7 +84,7 @@ class OrderByCustomerController extends Controller
     {
         $updeteConfirm = OrderByCustomer::find($request->id);
         $updeteConfirm->cust_approve = Auth::id();
-        $updeteConfirm->cust_status = "2";
+        $updeteConfirm->cust_status = $request->status;
         $rs = $updeteConfirm->update();
         if (!$rs) {
             return response()->json(["result" => false]);

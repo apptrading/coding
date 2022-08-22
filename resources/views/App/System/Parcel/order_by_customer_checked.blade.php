@@ -2,37 +2,40 @@
 @section('title', 'DANIKA | Customer Check')
 @section('contents')
 
-    {{-- <div class="container py-2"> --}}
-    <div class="row py-2">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
-            <table class="table table-bordered" style="width:100%" id="table-parcel">
-                <thead>
-                    <tr>
-                        <td>ດຳລັບ</td>
-                        <td>ເລກລະຫັດບາໂຄດ</td>
-                        <td>ຊື່ລູກຄ້າ</td>
-                        <td>ເບີໂທ</td>
-                        <td>ເບິ ວັອດແອັບ</td>
-                        <td>ລາຄາ</td>
-                        <td>ຂໍ້ມູນການຊຳລະ</td>
-                        <td>ອະນູມັດໂດຍ</td>
-                        <td>ສະຖານະການອະນູມັດ</td>
-                        <td>ຫຼັກຖານ</td>
-                        <td>ວັນທີ່ບັນທືກ</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="11"><i class="fas fa-spinner fa-pulse"></i> ກຳລັງໂຫຼດ...</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="container-fluid py-2">
+        <div class="row py-2">
+            <div class="col-md-1"></div>
+            <div class="col-md-10  table-responsive">
+                <table class="table table-bordered" style="width:100%" id="table-parcel">
+                    <thead>
+                        <tr>
+                            <td>ດຳລັບ</td>
+                            <td>ເລກລະຫັດບາໂຄດ</td>
+                            <td>ຊື່ລູກຄ້າ</td>
+                            <td>ເບີໂທ</td>
+                            {{-- <td>ເບິ ວັອດແອັບ</td> --}}
+                            <td>ລາຄາ</td>
+                            <td>ຂໍ້ມູນການຊຳລະ</td>
+                            <td>ອະນູມັດໂດຍ</td>
+                            <td>ເລກບີນ</td>
+                            <td>ວັນທີ່</td>
+                            <td>ເວລາ</td>
+                            <td>ສະຖານະການອະນູມັດ</td>
+                            <td>ຫຼັກຖານ</td>
+                            <td>ວັນທີ່ບັນທືກ</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="14"><i class="fas fa-spinner fa-pulse"></i> ກຳລັງໂຫຼດ...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-1"></div>
         </div>
-        <div class="col-md-1"></div>
     </div>
-    {{-- </div> --}}
     <!-- Modal -->
     <div class="modal fade" id="mdal_edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="mdal_editLabel" aria-hidden="true">
@@ -48,7 +51,7 @@
                         <input type="hidden" name="id" id="inp_id">
                         <input type="text" name="barcode" id="barcode" class="form-control">
                     </div>
-                    <div class="modal-footer" >
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ປີດ</button>
                         <button type="submit" id="btnEdit" class="btn btn-primary">ບັນທືກ</button>
                     </div>
@@ -106,7 +109,8 @@
 
         function _tables(result_datas) {
             let numb = 1;
-            $('#table-parcel').DataTable({
+            var table = $('#table-parcel').DataTable({
+                responsive: true,
                 destroy: true,
                 data: result_datas,
                 columns: [{
@@ -128,9 +132,9 @@
                     {
                         data: "customer_tell"
                     },
-                    {
-                        data: "customer_whatsapp",
-                    },
+                    // {
+                    //     data: "customer_whatsapp",
+                    // },
                     {
                         data: "cust_payment",
                     },
@@ -151,14 +155,25 @@
                     {
                         data: "name",
                     },
-
+                    {
+                        data: "cust_nub_bill",
+                    },
+                    {
+                        data: "cust_date_pay",
+                    },
+                    {
+                        data: "cust_time_pay",
+                    },
                     {
                         data: "cust_approve",
                         render: function(data, type, row) {
                             var letReturn = "";
-                            if (row.cust_approve > 0) {
+                            if (row.cust_status == 2) {
                                 letReturn +=
                                     "<span class=\"badge rounded-pill bg-success\">ອະນູມັດແລ້ວ</span>";
+                            } else if (row.cust_status == 3) {
+                                letReturn +=
+                                    "<span class=\"badge rounded-pill bg-danger\">ບໍ່ອະນູມັດແລ້ວ</span>";
                             } else {
                                 letReturn +=
                                     "<span class=\"badge rounded-pill bg-warning text-dark\">ລໍຖ້າອະນູມັດ</span>";
@@ -172,7 +187,8 @@
                         data: "cust_picturepayment",
                         render: function(data, type, row) {
                             var _files = row.cust_picturepayment;
-                            return "<a href=\"" + _files + "\" style=\"text-decoration: none\" target=\"_blank\">ຫຼັກຖານການໂອນ</a>";
+                            return "<a href=\"" + _files +
+                                "\" style=\"text-decoration: none\" target=\"_blank\">ຫຼັກຖານການໂອນ</a>";
                         }
                     },
                     {
@@ -196,7 +212,9 @@
                                 btnDisabled = "disabled"
                             }
                             var letReturn = "";
-                            var btn1 = "<button type=\"button\" " + btnDisabled + " onclick=\"_agree(" + row
+                            var btn1 =
+                                "<button {{ Auth::user()->userright == 1 ? '' : 'disabled' }} type=\"button\" " +
+                                btnDisabled + " onclick=\"_agree(" + row
                                 .id +
                                 ")\" class=\"btn btn-success\"><i class=\"far fa-check-circle\"></i></button>";
                             var btn2 =
@@ -208,29 +226,51 @@
                                 "<div class=\"btn-group btn-group-sm\" role=\"group\">" + btn1 + btn2 +
                                 " </div>";
 
-
-
                             return letReturn;
                         }
                     }
                 ]
             });
+            new $.fn.dataTable.FixedHeader(table);
         }
 
         function _agree(id) {
             Swal.fire({
-                title: 'ການອະນຸມັດບີນເກັບເງີນປາຍທາງ',
+                title: 'ການອະນຸມັດບີນເກັບເງິນປາຍທາງ',
                 // text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
+                showDenyButton: true,
                 confirmButtonColor: '#006600',
-                cancelButtonColor: '#ff9900',
+                denyButtonColor: '#ff9900',
+                cancelButtonColor: '#e60000',
                 confirmButtonText: 'ອະນູມັດ',
-                cancelButtonText: 'ບໍ່ອະນູມັດ'
+                denyButtonText: `ບໍ່ອະນູມັດ`,
+                cancelButtonText: 'ອອກ',
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "/app/parcel/cust/confirm/" + id,
+                        url: "/app/parcel/cust/confirm/" + id + "/2",
+                        method: 'GET',
+                        processData: false,
+                        dataType: 'json',
+                        contentType: false,
+                        cashe: false,
+                        success: function(result) {
+                            Swal.fire(
+                                'Confirm Success!',
+                                '',
+                                'success'
+                            )
+                            _tables(result.datas);
+                        },
+                        error: function(err) {
+                            console.log(err);
+                        }
+                    })
+                } else if (result.isDenied) {
+                    $.ajax({
+                        url: "/app/parcel/cust/confirm/" + id + "/3",
                         method: 'GET',
                         processData: false,
                         dataType: 'json',

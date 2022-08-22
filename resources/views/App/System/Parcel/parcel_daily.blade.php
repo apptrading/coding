@@ -5,27 +5,109 @@
         <div class="row">
             <div class="col-md-4 col-12"></div>
             <div class="col-md-4 col-12">
-                <h3 class="text-center">ໃສ່ເລກລະຫັດ ບາໂຄດ</h3>
+                <h3 class="text-center">ພັດສະດຸທີ່ເກັບເງິນປາຍທາງ</h3>
 
                 <form action="{{ route('app.parcel.Dailyparcel') }}" method="POST" enctype="multipart/form-data"
                     id="frm-step-first-daily">
 
-                    <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
+                    <div class="row">
+                        <div class="col-md-6 customer1">
+                            <div class="mb-3">
+                                <label for="customer_name" class="form-label">ຊື່ລູກຄ້າ</label>
+                                <input type="text" class="form-control required1" id="customer_name"
+                                    name="customer_name">
+                                <small
+                                    onclick="
+                                    $('.customer2').show();
+                                    $('.customer1').hide();
+                                    $('.required1').prop('required',false);
+                                    $('.required2').prop('required',true);
+                                    $('#customerId').val('')"
+                                    class="text-primary" role="button">ກັບສູ່ລາຍຊື່ລູກຄ້າ</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 customer1">
+                            <div class="mb-3">
+                                <label for="customer_tell" class="form-label">ເບີໂທ</label>
+                                <input type="text" class="form-control required1" id="customer_tell"
+                                    name="customer_tell">
+                            </div>
+                        </div>
 
-                    {{-- <div id="sig"></div> --}}
-                    <div style="width: 100%;height: 200px;">
-                        <canvas id="sig" class="sig"
-                            style="border:1px solid red;width: 100%;height: 200px;"></canvas>
-                        <i class="fab fa-adn" role="button" id="save-png"
-                            style="top: -45px;position: relative;font-size: 35px;left: 5px;"></i>
+                        <div class="col-md-12 customer2">
+                            <label for="customerId" class="form-label">ລາຍຊື່ລູກຄ້າ</label>
+                            <div class="input-group mb-3">
+
+                                <select class="form-select required2" id="customerId" name="customerId">
+                                    <option selected value="">ເລືອກລາຍຊື່ລູກຄ້າ</option>
+                                </select>
+                                <button
+                                    onclick="
+                                    $('.customer1').show();
+                                    $('.customer2').hide();
+                                    $('.required1').prop('required',true);
+                                    $('.required2').prop('required',false);
+                                    $('.required1').val('')"
+                                    class="btn btn-primary" type="button" id="button-addon2"><i
+                                        class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_payment" class="form-label">ຍອດປາຍທາງ</label>
+                                <input type="text" class="form-control" id="cust_payment" name="cust_payment" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_barcode" class="form-label">ລະຫັດພັດສະດຸ</label>
+                                <input type="text" name="cust_barcode" id="cust_barcode" class="form-control mb-2">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <label for="cust_fileparcel" class="form-label">ຮູບເຄື່ອງ</label>
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="cust_fileparcel" name="cust_fileparcel">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="cust_picturepayment" class="form-label">ສະລິບໂອນເງິນ </label>
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="cust_picturepayment"
+                                    name="cust_picturepayment" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_date_pay" class="form-label">ວັນທີ່</label>
+                                <input type="date" class="form-control" id="cust_date_pay" name="cust_date_pay" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_time_pay" class="form-label">ເວລາ</label>
+                                <input type="time" class="form-control" id="cust_time_pay" name="cust_time_pay" step="2" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_count_transfer" class="form-label">ຈຳນວນເງິນທີ່ໂອນ</label>
+                                <input type="tel" class="form-control" id="cust_count_transfer"
+                                    name="cust_count_transfer">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cust_nub_bill" class="form-label">ເລກບີນການໂອນ</label>
+                                <input type="tel" class="form-control" id="cust_nub_bill" name="cust_nub_bill">
+                            </div>
+                        </div>
+
                     </div>
 
 
-                    <div class="input-group py-2">
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel[]" multiple>
-                    </div>
-
-                    <input type="hidden" name="signature_img" id="signature_img">
 
                     <div id="alertId"></div>
 
@@ -35,8 +117,8 @@
                         <button class="btn btn-danger" type="button" id="clear">
                             ລົບລາຍເຊັນ</button>
 
-                        <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
-                            type="button">
+                        <button class="btn btn-secondary"
+                            onclick="window.location.href='{{ route('app.system.parcel') }}'" type="button">
                             <i class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
                 </form>
@@ -46,6 +128,9 @@
     </div>
     <script>
         $(document).ready(function() {
+            $('.customer1').hide()
+            $('.required2').prop('required', true)
+
             $('form').on('submit', function(event) {
                 event.preventDefault();
 
@@ -70,7 +155,8 @@
                             $('#btnSave').html(
                                 '<i class="fas fa-save"></i> ບັນທືກ')
                             $('#frm-step-first-daily')[0].reset();
-                            signaturePad.clear();
+                            // signaturePad.clear();
+                            window.location.href = "{{ route('app.system.parcel') }}";
 
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -114,53 +200,39 @@
                 });
 
             });
+
+            /** customer list */
+            $.ajax({
+                url: "{{ route('app.customer.customer.select') }}",
+                method: "GET",
+                contentType: false,
+                dataType: 'json',
+                processData: false,
+                cashe: false,
+                beforeSend: function() {
+                    $('#customerId').html('<option value="" selected>ເລືອກລາຍຊື່ລູກຄ້າ</option>')
+                    $('#customerId').prop('disabled', true)
+                },
+                success: function(result) {
+                    console.log(result);
+                    $('#customerId').prop('disabled', false)
+                    var _datas = result.datas;
+                    var Option = "<option value=\"\" selected>ເລືອກລາຍຊື່ລູກຄ້າ</option>";
+                    for (let _cust = 0; _cust < _datas.length; _cust++) {
+                        Option += "<option value=\"" + _datas[_cust].id + "\">" + _datas[_cust]
+                            .customer_name +
+                            " [" + _datas[_cust].customer_tell + "] </option>";
+                    }
+                    $('#customerId').html(Option);
+                    $('#customerId').select2({
+                        theme: "bootstrap-5",
+                    })
+
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            })
         })
-    </script>
-    <script>
-        function _error_sign() {
-            Swal.fire(
-                'ກະລຸນາລົງລາຍເຊັນ',
-                '',
-                'error'
-            )
-        }
-
-        $('#btnSave').prop('disabled', true)
-        var canvas = document.getElementById('sig');
-
-        function resizeCanvas() {
-            var ratio = Math.max(window.devicePixelRatio || 1, 1);
-            canvas.width = canvas.offsetWidth * ratio;
-            canvas.height = canvas.offsetHeight * ratio;
-            canvas.getContext("2d").scale(ratio, ratio);
-        }
-
-        window.onresize = resizeCanvas;
-        resizeCanvas();
-
-        var signaturePad = new SignaturePad(canvas, {
-            backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
-        });
-
-        var data = signaturePad.toDataURL('image/png');
-        console.log(data);
-        $('#signature_img').val(data);
-
-
-        document.getElementById('save-png').addEventListener('click', function() {
-            if (signaturePad.isEmpty()) {
-                // return alert("Please provide a signature first.");
-                return _error_sign()
-            }
-
-            var data = signaturePad.toDataURL('image/png');
-            document.getElementById('signature_img').value = data;
-            $('#btnSave').prop('disabled', false)
-            // console.log(data);
-        });
-        document.getElementById('clear').addEventListener('click', function() {
-            signaturePad.clear();
-            $('#btnSave').prop('disabled', true)
-        });
     </script>
 @endsection

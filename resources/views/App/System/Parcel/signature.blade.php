@@ -1,18 +1,11 @@
 @extends('Layout.layout_back_end')
-@section('title', 'DANIKA | Scan by PC')
+@section('title', 'DANIKA | Signature')
 @section('contents')
     <div class="container py-2">
-        <div class="row">
-            <div class="col-md-4 col-12"></div>
-            <div class="col-md-4 col-12">
-                <h3 class="text-center">ໃສ່ເລກລະຫັດ ບາໂຄດ</h3>
-
-                <form action="{{ route('app.parcelstepfirst') }}" method="POST" enctype="multipart/form-data"
-                    id="frm-step-first">
-
-                    <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
-
-                    {{-- <div id="sig"></div> --}}
+        <form action="{{ route('app.parcelstepfirst.SignMultiple') }}" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
                     <div style="width: 100%;height: 200px;">
                         <canvas id="sig" class="sig"
                             style="border:1px solid red;width: 100%;height: 200px;"></canvas>
@@ -20,30 +13,26 @@
                             style="top: -45px;position: relative;font-size: 35px;left: 5px;"></i>
                     </div>
 
-
-                    <div class="input-group py-2"> 
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel[]"  multiple >
-                    </div>
-
                     <input type="hidden" name="signature_img" id="signature_img">
-
-                    <div id="alertId"></div>
-
+                    <br>
                     <div class="d-grid gap-2 col-12 mx-auto">
                         <button class="btn btn-primary" type="submit" id="btnSave"><i class="fas fa-save"></i>
                             ບັນທຶກ</button>
                         <button class="btn btn-danger" type="button" id="clear">
                             ລົບລາຍເຊັນ</button>
 
-                        <button class="btn btn-secondary" onclick="window.location.href='{{ route('app.system.parcel') }}'"
+                        <button class="btn btn-secondary"
+                            onclick="window.location.href='{{ route('app.system.parcel.normal_multiple') }}'"
                             type="button">
                             <i class="fas fa-reply-all"></i> ຍ້ອນກັບ</button>
                     </div>
-                </form>
+                </div>
+                <div class="col-md-4"></div>
             </div>
-            <div class="col-md-4 col-12"></div>
-        </div>
+        </form>
     </div>
+
+
     <script>
         $(document).ready(function() {
             $('form').on('submit', function(event) {
@@ -59,63 +48,28 @@
                     cashe: false,
                     beforeSend: function() {
                         $('#btnSave').html(
-                            '<i class="fas fa-spinner fa-pulse"></i> ກຳລັງບັນທືກ')
+                            '<i class="fas fa-spinner fa-pulse"></i> ກຳລັງບັນທຶກ')
                         $('#btnSave').prop('disabled', true)
                     },
                     success: function(result) {
                         console.log(result);
-
-                        if (result.result == true) {
-                            $('#btnSave').prop('disabled', false)
-                            $('#btnSave').html(
-                                '<i class="fas fa-save"></i> ບັນທືກ')
-                            $('#frm-step-first')[0].reset();
-                            signaturePad.clear();
-                            const Toast = Swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000,
-                                timerProgressBar: true,
-                                didOpen: (toast) => {
-                                    toast.addEventListener('mouseenter', Swal
-                                        .stopTimer)
-                                    toast.addEventListener('mouseleave', Swal
-                                        .resumeTimer)
-                                }
-                            })
-
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'successfully'
-                            })
-                        } else {
-                            $('#alertId').html(
-                                "<div class=\"alert alert-danger  alert-dismissible fade show\" role=\"alert\">" +
-                                " <strong>ຂໍ້ມູນຊ້ຳກັນ</strong> ລະຫັດນີ້ ມີໃນສະເຕັບນີ້ແລ້ວ" +
-                                "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>" +
-                                "</div>"
-                            )
-                            $('#btnSave').prop('disabled', false)
-                            $('#btnSave').html(
-                                '<i class="fas fa-save"></i> ບັນທືກ')
-                        }
-
+                        window.location.href = '{{ route('app.system.parcel') }}'
 
                     },
                     error: function(err) {
                         console.log(err);
                         $('#btnSave').prop('disabled', false)
                         $('#btnSave').html(
-                            '<i class="fas fa-save"></i> ບັນທືກ')
+                            '<i class="fas fa-save"></i> ບັນທຶກ')
                     }
 
                 });
 
             });
         })
-    </script>
-    <script>
+
+
+
         function _error_sign() {
             Swal.fire(
                 'ກະລຸນາລົງລາຍເຊັນ',
@@ -125,7 +79,7 @@
         }
 
         $('#btnSave').prop('disabled', true)
-        
+
         var canvas = document.getElementById('sig');
 
         function resizeCanvas() {

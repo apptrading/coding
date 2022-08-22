@@ -9,7 +9,7 @@
                 <table class="table table-bordered" style="width:100%" id="table-parcel">
                     <thead>
                         <tr>
-                            <td>ລຳດັບ</td>
+                            <td>ດຳລັບ</td>
                             <td>ເລກລະຫັດບາໂຄດ</td>
                             <td>ຊື່ລູກຄ້າ</td>
                             <td>ເບີໂທ</td>

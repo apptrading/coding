@@ -61,7 +61,7 @@
                 </li>
             @endif
 
-            @if (Auth::user()->userright == 1)
+            @if (Auth::user()->userright == 1 || Auth::user()->userright == 2)
                 <li>
                     {{-- /** Setting BackEnd **/ --}}
                     <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -100,6 +100,13 @@
                                             class="nav-link  list-group-item py-3 focus">
                                             <i class="fas fa-boxes"></i>
                                             ຕັ້ງຄາລາຄ່າຂອງກ່ອງພັດສະດຸ
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{{ route('app.priceofparcel') }}"
+                                            class="nav-link  list-group-item py-3 focus">
+                                            <i class="fas fa-recycle"></i>
+                                            ຕັ້ງຄາລາຄ່າເລດເງິນ
                                         </a>
                                     </li>
                                 </ul>

@@ -1,5 +1,5 @@
 @extends('Layout.layout_back_end')
-@section('title', 'DANIKA | Scan by PC')
+@section('title', 'DANIKA | Daily')
 @section('contents')
     <div class="container py-2">
         <div class="row">
@@ -7,8 +7,8 @@
             <div class="col-md-4 col-12">
                 <h3 class="text-center">ໃສ່ເລກລະຫັດ ບາໂຄດ</h3>
 
-                <form action="{{ route('app.parcelstepfirst') }}" method="POST" enctype="multipart/form-data"
-                    id="frm-step-first">
+                <form action="{{ route('app.parcel.Dailyparcel') }}" method="POST" enctype="multipart/form-data"
+                    id="frm-step-first-daily">
 
                     <input type="text" name="route_barcode" id="route_barcode" class="form-control mb-2" required>
 
@@ -21,8 +21,8 @@
                     </div>
 
 
-                    <div class="input-group py-2"> 
-                        <input type="file" class="form-control" id="img_parcel" name="img_parcel[]"  multiple >
+                    <div class="input-group py-2">
+                        <input type="file" class="form-control" id="img_parcel" name="img_parcel[]" multiple>
                     </div>
 
                     <input type="hidden" name="signature_img" id="signature_img">
@@ -69,8 +69,9 @@
                             $('#btnSave').prop('disabled', false)
                             $('#btnSave').html(
                                 '<i class="fas fa-save"></i> ບັນທືກ')
-                            $('#frm-step-first')[0].reset();
+                            $('#frm-step-first-daily')[0].reset();
                             signaturePad.clear();
+
                             const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -92,7 +93,7 @@
                         } else {
                             $('#alertId').html(
                                 "<div class=\"alert alert-danger  alert-dismissible fade show\" role=\"alert\">" +
-                                " <strong>ຂໍ້ມູນຊ້ຳກັນ</strong> ລະຫັດນີ້ ມີໃນສະເຕັບນີ້ແລ້ວ" +
+                                " <strong>ເກີດຂໍ້ຜິດພາດ</strong> ລະຫັດບາໂຄດນີ້ຍັງບໍ່ຖືກອະນຸມັດ ກະລຸນາຕີດຕໍ່ Admin" +
                                 "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>" +
                                 "</div>"
                             )
@@ -125,7 +126,6 @@
         }
 
         $('#btnSave').prop('disabled', true)
-        
         var canvas = document.getElementById('sig');
 
         function resizeCanvas() {
@@ -163,5 +163,4 @@
             $('#btnSave').prop('disabled', true)
         });
     </script>
-
 @endsection
